@@ -3,7 +3,7 @@
 <!-- update_progress -->
 
 ![](https://img.shields.io/badge/编程语言-Rust-dea584)
-![](https://img.shields.io/badge/进度-3%25-blue)
+![](https://img.shields.io/badge/进度-4%25-blue)
 
 <!-- update_progress -->
 
@@ -140,3 +140,49 @@ impl Solution {
 
 时间复杂度 O(n)：
 每个数字最多只被访问两次，整体效率高。
+
+## 移动零
+
+> 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
+> 
+> 请注意 ，必须在不复制数组的情况下原地对数组进行操作。
+
+<!-- insert_source_code src=./src/move_zeroes.rs -->
+```rs
+use crate::Solution;
+
+impl Solution {
+    pub fn move_zeroes(nums: &mut Vec<i32>) {
+        let nums_len = nums.len();
+        let mut nums_checked = 0usize;
+        let mut index = 0usize;
+        loop {
+            if nums_checked >= nums_len {
+                break;
+            }
+            if nums[index] == 0 {
+                nums.remove(index);
+                nums.push(0);
+                // 不增加 index，因为移除后当前 index 位置的元素变了
+            } else {
+                index += 1;
+            }
+            nums_checked += 1;
+        }
+    }
+}
+
+```
+<!-- insert_source_code -->
+
+双指针法：
+使用一个指针 last_non_zero 指向下一个应该放非零元素的位置，另一个指针遍历整个数组。
+
+遍历并移动非零元素：
+遍历数组时，如果遇到非零元素，就把它赋值到 last_non_zero 指向的位置，并将 last_non_zero 向后移动一位。
+
+填充零：
+遍历结束后，从 last_non_zero 开始到数组末尾，将剩余的位置全部赋值为 0。
+
+原地操作：
+全程只用常数额外空间，满足原地操作的要求。
