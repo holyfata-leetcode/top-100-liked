@@ -4,12 +4,13 @@ import * as path from 'path';
 const srcDir = path.resolve(__dirname, '../src');
 const readmePath = path.resolve(__dirname, '../README.md');
 
-// 读取 src 目录下的文件数量，排除 main.rs
+// 读取 src 目录下的文件数量，排除 main.rs，忽略扩展名后去重
 const files = fs.readdirSync(srcDir).filter(file => {
   const stat = fs.statSync(path.join(srcDir, file));
   return stat.isFile() && file !== 'main.rs';
 });
-const count = files.length;
+const baseNames = Array.from(new Set(files.map(file => path.parse(file).name)));
+const count = baseNames.length;
 
 // 计算进度百分比
 const percent = Math.floor((count / 100) * 100);
