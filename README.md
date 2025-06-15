@@ -3,7 +3,7 @@
 <!-- update_progress -->
 
 ![](https://img.shields.io/badge/编程语言-Rust-dea584)
-![](https://img.shields.io/badge/进度-4%25-blue)
+![](https://img.shields.io/badge/进度-5%25-blue)
 
 <!-- update_progress -->
 
@@ -186,3 +186,53 @@ impl Solution {
 
 原地操作：
 全程只用常数额外空间，满足原地操作的要求。
+
+## 盛最多水的容器
+
+> 给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。
+> 
+> 找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+> 
+> 返回容器可以储存的最大水量。
+> 
+> 说明：你不能倾斜容器。
+
+<!-- insert_source_code src=./src/max_area.rs -->
+```rs
+use crate::Solution;
+
+impl Solution {
+    pub fn max_area(height: Vec<i32>) -> i32 {
+        let (mut left, mut right) = (0, height.len() - 1);
+        let mut max_area = 0;
+        while left < right {
+            let h = height[left].min(height[right]);
+            let w = (right - left) as i32;
+            max_area = max_area.max(h * w);
+            if height[left] < height[right] {
+                left += 1;
+            } else {
+                right -= 1;
+            }
+        }
+        max_area
+    }
+}
+
+```
+<!-- insert_source_code -->
+
+双指针法：
+用两个指针分别指向数组的两端（left 和 right），代表当前选取的两条线。
+
+计算当前面积：
+每次计算由 left 和 right 形成的容器面积：高度取两端较小值，宽度为 right - left。
+
+更新最大面积：
+用一个变量记录目前为止的最大面积，每次计算后进行更新。
+
+移动较短板指针：
+为了尝试获得更大的面积，移动高度较小的那一端指针（如果左端较短则 left++，否则 right--），因为移动较高的那一端不会增加面积。
+
+直到指针相遇：
+当 left 和 right 相遇时，遍历结束，返回最大面积。
