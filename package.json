@@ -14,6 +14,6 @@
   },
   "scripts": {
     "prepare": "husky",
-    "update_progress": "bun run scripts/update_progress.ts"
+    "automd": "bun run scripts/update_badges.ts && bun run scripts/insert_source_code.ts"
   }
 }

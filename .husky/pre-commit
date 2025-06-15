@@ -1,3 +1,3 @@
-bun update_progress
+bun run automd
 cargo fmt
 git add .
