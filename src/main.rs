@@ -1,3 +1,4 @@
+mod find_anagrams;
 mod group_anagrams;
 mod length_of_longest_substring;
 mod longest_consecutive;

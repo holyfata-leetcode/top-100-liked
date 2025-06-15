@@ -3,7 +3,7 @@
 <!-- update_progress -->
 
 ![](https://img.shields.io/badge/编程语言-Rust-dea584)
-![](https://img.shields.io/badge/进度-9%25-blue)
+![](https://img.shields.io/badge/进度-10%25-blue)
 
 <!-- update_progress -->
 
@@ -423,3 +423,50 @@ function lengthOfLongestSubstring(s: string): number {
 
 最终返回最大长度：
 遍历结束后，返回记录的最大长度。
+
+## 找到字符串中所有字母异位词
+
+> 给定两个字符串 s 和 p，找到 s 中所有 p 的 异位词 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
+
+<!-- insert_source_code src=./src/find_anagrams.rs -->
+```rs
+use crate::Solution;
+
+impl Solution {
+    pub fn find_anagrams(s: String, p: String) -> Vec<i32> {
+        let mut p_str = p.chars().collect::<Vec<char>>();
+        p_str.sort();
+        let mut result: Vec<i32> = Vec::new();
+        if s.len() < p.len() {
+            return result;
+        }
+        let p_len = p.len();
+        for i in 0..s.len() + 1 - p_len {
+            let sub = &s[i..i + p_len];
+            let mut sub_str = sub.chars().collect::<Vec<char>>();
+            sub_str.sort();
+            if sub_str == p_str {
+                result.push(i as i32);
+            }
+        }
+        result
+    }
+}
+
+```
+<!-- insert_source_code -->
+
+排序法判断异位词：
+先将目标字符串 p 排序，得到基准排序结果。
+
+滑动窗口遍历主串：
+用一个长度为 p.len() 的滑动窗口在主串 s 上滑动，每次取出一个子串。
+
+对子串排序并比较：
+将窗口内的子串排序，与已排序的 p 进行比较。如果相等，说明当前窗口是一个异位词。
+
+记录起始索引：
+如果匹配成功，则将当前窗口的起始索引加入结果列表。
+
+时间复杂度：
+每次窗口都要排序，整体时间复杂度为 O(n * m log m)，其中 n 为 s 长度，m 为 p 长度。
