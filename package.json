@@ -1,0 +1,19 @@
+{
+  "name": "top-100-liked",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "husky": "^9.1.7"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "update_progress": "bun run scripts/update_progress.ts"
+  }
+}
