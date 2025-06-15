@@ -3,7 +3,7 @@
 <!-- update_progress -->
 
 ![](https://img.shields.io/badge/编程语言-Rust-dea584)
-![](https://img.shields.io/badge/进度-2%25-blue)
+![](https://img.shields.io/badge/进度-3%25-blue)
 
 <!-- update_progress -->
 
@@ -92,3 +92,51 @@ impl Solution {
 
 收集所有分组结果：
 遍历哈希表，将所有 value（即分组后的字符串列表）收集起来，作为最终结果返回。
+
+## 最长连续序列
+
+> 给定一个未排序的整数数组 nums ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
+> 
+> 请你设计并实现时间复杂度为 O(n) 的算法解决此问题。
+
+<!-- insert_source_code src=./src/longest_consecutive.rs -->
+```rs
+use crate::Solution;
+use std::collections::HashSet;
+
+impl Solution {
+    pub fn longest_consecutive(nums: Vec<i32>) -> i32 {
+        let set: HashSet<i32> = nums.into_iter().collect();
+        let mut max_len = 0;
+        for &num in &set {
+            if !set.contains(&(num - 1)) {
+                let mut current = num;
+                let mut len = 1;
+                while set.contains(&(current + 1)) {
+                    current += 1;
+                    len += 1;
+                }
+                max_len = max_len.max(len);
+            }
+        }
+        max_len
+    }
+}
+
+```
+<!-- insert_source_code -->
+
+去重存储：
+首先用哈希集合（HashSet）对输入数组去重，方便后续 O(1) 查询。
+
+只从连续序列的起点出发：
+遍历集合中的每个数字 num，仅当 num-1 不在集合中时，才认为 num 是某个连续序列的起点。
+
+向右扩展序列：
+从起点 num 开始，不断检查 num+1、num+2... 是否在集合中，统计当前连续序列的长度。
+
+更新最大长度：
+每找到一个连续序列，就更新最大长度。
+
+时间复杂度 O(n)：
+每个数字最多只被访问两次，整体效率高。
