@@ -7,7 +7,7 @@
 
 <!-- update_progress -->
 
-## 两数之和
+## [两数之和](https://leetcode.cn/problems/two-sum/description/?envType=study-plan-v2&envId=top-100-liked)
 
 > 给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。
 > 
@@ -53,7 +53,7 @@ impl Solution {
 时间复杂度 O(n)：
 由于哈希表的查找和插入都是常数时间，所以整体时间复杂度为 O(n)
 
-## 字母异位词分组
+## [字母异位词分组](https://leetcode.cn/problems/group-anagrams/description/?envType=study-plan-v2&envId=top-100-liked)
 
 > 给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表。
 > 
@@ -93,7 +93,7 @@ impl Solution {
 收集所有分组结果：
 遍历哈希表，将所有 value（即分组后的字符串列表）收集起来，作为最终结果返回。
 
-## 最长连续序列
+## [最长连续序列](https://leetcode.cn/problems/longest-consecutive-sequence/description/?envType=study-plan-v2&envId=top-100-liked)
 
 > 给定一个未排序的整数数组 nums ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
 > 
@@ -141,7 +141,7 @@ impl Solution {
 时间复杂度 O(n)：
 每个数字最多只被访问两次，整体效率高。
 
-## 移动零
+## [移动零](https://leetcode.cn/problems/move-zeroes/description/?envType=study-plan-v2&envId=top-100-liked)
 
 > 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
 > 
