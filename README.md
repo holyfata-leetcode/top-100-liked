@@ -3,7 +3,7 @@
 <!-- update_progress -->
 
 ![](https://img.shields.io/badge/编程语言-Rust-dea584)
-![](https://img.shields.io/badge/进度-9%25-blue)
+![](https://img.shields.io/badge/进度-10%25-blue)
 
 <!-- update_progress -->
 
@@ -17,6 +17,7 @@
 - [接雨水](#接雨水)
 - [无重复字符的最长子串](#无重复字符的最长子串)
 - [找到字符串中所有字母异位词](#找到字符串中所有字母异位词)
+- [和为 K 的子数组](#和为-k-的子数组)
 <!-- TOC -->
 
 ## [两数之和](https://leetcode.cn/problems/two-sum/description/?envType=study-plan-v2&envId=top-100-liked)
@@ -482,3 +483,50 @@ impl Solution {
 
 时间复杂度：
 每次窗口都要排序，整体时间复杂度为 O(n * m log m)，其中 n 为 s 长度，m 为 p 长度。
+
+## 和为 K 的子数组
+
+> 给你一个整数数组 nums 和一个整数 k ，请你统计并返回 该数组中和为 k 的子数组的个数 。
+> 
+> 子数组是数组中元素的连续非空序列。
+
+<!-- insert_source_code src=./src/subarray_sum.rs -->
+```rs
+use std::collections::HashMap;
+
+use crate::Solution;
+
+impl Solution {
+    pub fn subarray_sum(nums: Vec<i32>, k: i32) -> i32 {
+        let mut count = 0;
+        let mut sum = 0;
+        let mut map = HashMap::new();
+        map.insert(0, 1);
+        for num in nums {
+            sum += num;
+            if let Some(&c) = map.get(&(sum - k)) {
+                count += c;
+            }
+            *map.entry(sum).or_insert(0) += 1;
+        }
+        count
+    }
+}
+
+```
+<!-- insert_source_code -->
+
+前缀和思想：
+用一个变量 sum 记录遍历到当前位置时的前缀和。
+
+哈希表统计前缀和出现次数：
+用哈希表（map）记录每个前缀和出现的次数，初始时 map[0]=1，表示前缀和为0出现过一次。
+
+遍历数组，实时统计答案：
+每遍历一个元素，更新当前前缀和 sum，然后查找 map 中是否存在 sum - k。如果存在，说明之前有一段前缀和为 sum-k，当前到这段之间的子数组和为 k，累加其出现次数。
+
+更新哈希表：
+将当前前缀和 sum 的出现次数加一，便于后续统计。
+
+时间复杂度 O(n)：
+只需一次遍历和哈希表操作，效率高。
