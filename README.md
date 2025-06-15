@@ -3,7 +3,7 @@
 <!-- update_progress -->
 
 ![](https://img.shields.io/badge/编程语言-Rust-dea584)
-![](https://img.shields.io/badge/进度-6%25-blue)
+![](https://img.shields.io/badge/进度-7%25-blue)
 
 <!-- update_progress -->
 
@@ -254,10 +254,9 @@ impl Solution {
         if n < 3 {
             return Vec::new(); // If there are less than 3 numbers, return empty
         }
-        
+
         let mut result: Vec<Vec<i32>> = Vec::new();
         for i in 0..nums.len() {
-
             if nums[i] > 0 {
                 break;
             }
@@ -269,8 +268,12 @@ impl Solution {
                     if !result.contains(&turple) {
                         result.push(vec![nums[i], nums[l], nums[r]]);
                     }
-                    while l < r && nums[l] == nums[l + 1] { l += 1; }
-                    while l < r && nums[r] == nums[r - 1] { r -= 1; }
+                    while l < r && nums[l] == nums[l + 1] {
+                        l += 1;
+                    }
+                    while l < r && nums[r] == nums[r - 1] {
+                        r -= 1;
+                    }
                     l += 1;
                     r -= 1;
                 } else if sum < 0 {
@@ -306,3 +309,50 @@ impl Solution {
 如果和小于 0，左指针右移；如果和大于 0，右指针左移。
 收集所有不重复的三元组
 最终返回所有满足条件且不重复的三元组。
+
+## 接雨水
+
+> 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+
+<!-- insert_source_code src=./src/trap.rs -->
+```rs
+use crate::Solution;
+
+impl Solution {
+    pub fn trap(height: Vec<i32>) -> i32 {
+        let n = height.len();
+        if n == 0 {
+            return 0;
+        }
+        let mut left_max = vec![0; n];
+        let mut right_max = vec![0; n];
+        left_max[0] = height[0];
+        for i in 1..n {
+            left_max[i] = left_max[i - 1].max(height[i]);
+        }
+        right_max[n - 1] = height[n - 1];
+        for i in (0..n - 1).rev() {
+            right_max[i] = right_max[i + 1].max(height[i]);
+        }
+        let mut res = 0;
+        for i in 0..n {
+            res += left_max[i].min(right_max[i]) - height[i];
+        }
+        res
+    }
+}
+
+```
+<!-- insert_source_code -->
+
+预处理左右最大高度：
+对于每个位置，分别计算其左侧（包括自身）和右侧（包括自身）的最大高度，分别存入 left_max 和 right_max 数组。
+
+遍历每个位置计算可接水量：
+对于每个柱子，能接的水量等于该位置左右最大高度的较小值减去当前高度，即 min(left_max[i], right_max[i]) - height[i]。
+
+累加所有位置的水量：
+将每个位置能接的水量累加，得到总的接雨水量。
+
+时间复杂度 O(n)：
+只需三次遍历数组，效率高，空间复杂度 O(n)。

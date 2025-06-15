@@ -3,6 +3,7 @@ mod longest_consecutive;
 mod max_area;
 mod move_zeroes;
 mod three_sum;
+mod trap;
 mod two_sum;
 
 struct Solution {}
