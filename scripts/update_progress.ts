@@ -21,7 +21,7 @@ let readme = fs.readFileSync(readmePath, 'utf-8');
 readme = readme.replace(
   /(<!-- update_progress -->)[\s\S]*?(<!-- update_progress -->)/,
   `<!-- update_progress -->\n
-![](https://img.shields.io/badge/编程语言-Rust-dea584)\n
+![](https://img.shields.io/badge/编程语言-Rust-dea584)
 ![](https://img.shields.io/badge/进度-${percent}%25-blue)\n
 <!-- update_progress -->`
 );
