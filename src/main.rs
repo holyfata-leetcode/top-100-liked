@@ -1,5 +1,5 @@
-mod two_sum;
 mod group_anagrams;
+mod two_sum;
 
 struct Solution {}
 
