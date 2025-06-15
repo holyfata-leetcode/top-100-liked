@@ -3,7 +3,7 @@
 <!-- update_progress -->
 
 ![](https://img.shields.io/badge/编程语言-Rust-dea584)
-![](https://img.shields.io/badge/进度-5%25-blue)
+![](https://img.shields.io/badge/进度-6%25-blue)
 
 <!-- update_progress -->
 
@@ -236,3 +236,73 @@ impl Solution {
 
 直到指针相遇：
 当 left 和 right 相遇时，遍历结束，返回最大面积。
+
+## 三数之和
+
+> 给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请你返回所有和为 0 且不重复的三元组。
+> 
+> 注意：答案中不可以包含重复的三元组。
+
+<!-- insert_source_code src=./src/three_sum.rs -->
+```rs
+use crate::Solution;
+
+impl Solution {
+    pub fn three_sum(mut nums: Vec<i32>) -> Vec<Vec<i32>> {
+        nums.sort_unstable(); // Sort the input to handle duplicates easily
+        let n = nums.len();
+        if n < 3 {
+            return Vec::new(); // If there are less than 3 numbers, return empty
+        }
+        
+        let mut result: Vec<Vec<i32>> = Vec::new();
+        for i in 0..nums.len() {
+
+            if nums[i] > 0 {
+                break;
+            }
+            let (mut l, mut r) = (i + 1, n - 1);
+            while l < r {
+                let sum = nums[i] + nums[l] + nums[r];
+                if sum == 0 {
+                    let turple = vec![nums[i], nums[l], nums[r]];
+                    if !result.contains(&turple) {
+                        result.push(vec![nums[i], nums[l], nums[r]]);
+                    }
+                    while l < r && nums[l] == nums[l + 1] { l += 1; }
+                    while l < r && nums[r] == nums[r - 1] { r -= 1; }
+                    l += 1;
+                    r -= 1;
+                } else if sum < 0 {
+                    l += 1;
+                } else {
+                    r -= 1;
+                }
+            }
+        }
+        result
+    }
+}
+
+```
+<!-- insert_source_code -->
+
+排序
+首先对输入数组进行排序，方便后续去重和双指针查找。
+
+遍历每个元素作为三元组的第一个数
+用下标 i 遍历数组，每次以 nums[i] 作为三元组的第一个数。
+
+双指针查找剩余两个数
+对于每个 i，用两个指针 l（左指针，初始为 i+1）和 r（右指针，初始为数组末尾）查找，使得 nums[i] + nums[l] + nums[r] == 0。
+
+跳过重复元素
+
+外层循环时，如果当前元素和前一个元素相同，则跳过，避免重复三元组。
+内层查找时，找到一个三元组后，分别跳过左右指针指向的重复元素。
+移动指针
+
+如果三数之和等于 0，记录结果，并左右指针分别跳过重复元素后继续移动。
+如果和小于 0，左指针右移；如果和大于 0，右指针左移。
+收集所有不重复的三元组
+最终返回所有满足条件且不重复的三元组。
