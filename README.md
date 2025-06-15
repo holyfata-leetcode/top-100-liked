@@ -3,7 +3,7 @@
 <!-- update_progress -->
 
 ![](https://img.shields.io/badge/编程语言-Rust-dea584)
-![](https://img.shields.io/badge/进度-7%25-blue)
+![](https://img.shields.io/badge/进度-9%25-blue)
 
 <!-- update_progress -->
 
@@ -356,3 +356,70 @@ impl Solution {
 
 时间复杂度 O(n)：
 只需三次遍历数组，效率高，空间复杂度 O(n)。
+
+## 无重复字符的最长子串
+
+> 给定一个字符串 s ，请你找出其中不含有重复字符的 最长 子串 的长度。
+
+<!-- insert_source_code src=./src/length_of_longest_substring.rs -->
+```rs
+use crate::Solution;
+use std::collections::HashSet;
+
+impl Solution {
+    pub fn length_of_longest_substring(s: String) -> i32 {
+        let chars: Vec<char> = s.chars().collect();
+        let mut set = HashSet::new();
+        let (mut left, mut max_len) = (0, 0);
+        for right in 0..chars.len() {
+            while set.contains(&chars[right]) {
+                set.remove(&chars[left]);
+                left += 1;
+            }
+            set.insert(chars[right]);
+            max_len = max_len.max(right - left + 1);
+        }
+        max_len as i32
+    }
+}
+
+```
+<!-- insert_source_code -->
+
+<!-- insert_source_code src=./src/length_of_longest_substring.ts -->
+```ts
+function lengthOfLongestSubstring(s: string): number {
+    const set = new Set<string>();
+    let left = 0;
+    let maxLength = 0;
+    for (let right = 0; right < s.length; right++) {
+        while (set.has(s[right]!)) {
+            set.delete(s[left]!);
+            left++;
+        }
+        set.add(s[right]!);
+        maxLength = Math.max(maxLength, right - left + 1);
+    }
+    return maxLength;
+};
+
+```
+<!-- insert_source_code -->
+
+滑动窗口：
+使用两个指针（left 和 right）维护一个窗口，窗口内始终保证没有重复字符。
+
+哈希集合判重：
+用哈希集合（HashSet）存储当前窗口内的字符，便于 O(1) 判断字符是否重复。
+
+窗口右扩：
+右指针 right 向右遍历字符串，每遇到一个新字符就尝试加入集合。
+
+遇到重复字符时左移窗口：
+如果当前字符已在集合中，说明出现重复。此时不断移动左指针 left，并从集合中移除对应字符，直到窗口内无重复。
+
+更新最大长度：
+每次窗口右扩时，更新最大子串长度为 max(当前最大长度, right - left + 1)。
+
+最终返回最大长度：
+遍历结束后，返回记录的最大长度。
